@@ -1,0 +1,253 @@
+WindowManager:
+    MainMenu:
+    IntroducingScreen:
+    CameraScreen:
+    ResultScreen:
+
+
+<MainMenu>:
+    name: 'Main menu'
+    canvas.before:
+        Color:
+            rgb: 0.4, 0.7, 0.53
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    FloatLayout:
+        RoundedButton:
+            font_name: 'Roboto'
+            font_size: 22
+            color: 0, 0, 0
+            bold: True
+            text: 'Начать'
+            size_hint: 0.75845, 0.07813
+            pos_hint: {'center_x': 0.5, 'center_y': 0.10603}
+            on_release: app.root.current = 'Introducing screen'
+        Label:
+            text: 'Detect\u000aCalories\u000a\u000aURFU'
+            color: 0, 0, 0
+            font_size: 48
+            font_name: 'Abel-Regular.ttf'
+            pos_hint: {'center_x': 0.41466, 'center_y': 0.63505}
+            line_height: 0.7
+        Image:
+            source: 'logo.png'
+            pos_hint: {'center_x': 0.30769, 'center_y': 0.85}
+            size_hint: None, None
+            size: 320, 320
+
+
+<IntroducingScreen>:
+    name: 'Introducing screen'
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    FloatLayout:
+        RoundedButton1:
+            font_name: 'Roboto'
+            font_size: 22
+            color: 0, 0, 0
+            bold: True
+            text: 'Распознать'
+            size_hint: 0.75845, 0.07813
+            pos_hint: {'center_x': 0.5, 'center_y': 0.10603}
+            on_release: app.root.current = 'Camera'
+        BackgroundLabel:
+            background_color: 0, 128 / 255, 55 / 255, 0.21
+            text: '      Detect Calories URFU'
+            size_hint: 1, 0.12165
+            pos_hint: {'top': 1}
+            color: 0, 0, 0
+            font_name: 'Abel-Regular.ttf'
+            text_size: self.size
+            font_size: 22
+            halign: 'center'
+            valign: 'middle'
+        Button:
+            background_down: 'logo.png'
+            background_normal: 'logo.png'
+            size_hint: None, None
+            size: 150, 100
+            pos_hint: {'center_x': 0.09, 'center_y': 0.94}
+            on_press: app.root.current = 'Main menu'
+        Label:
+            text: 'Хотите узнать, насколько полезны блюда в столовой университета?\u000a\u000aПриложение покажет энергетическую ценность и содержание БЖУ.\u000aНаведите камеру смартфона, получите результат и контролируйте свое питание.'
+            font_name: 'Roboto'
+            color: 0, 0, 0
+            bold: True
+            size_hint: 0.65701, 0.578125
+            pos_hint: {'center_x': 0.5, 'center_y': 0.58958}
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            font_size: 22
+
+
+<CameraScreen>:
+    name: 'Camera'
+    Camera:
+        id: camera
+        resolution: (640, 480)
+        play: True
+    ToggleButton:
+        text: 'Play'
+        on_press: camera.play = not camera.play
+        size_hint_y: None
+        height: '48dp'
+    Button:
+        text: 'Capture'
+        size_hint_y: None
+        height: '48dp'
+        on_press:
+            root.capture()
+            app.root.current = 'Result'
+
+
+<ResultScreen>:
+    dish: dish
+    kkal: kkal
+    protein: protein
+    fats: fats
+    carboh: carboh
+    name: 'Result'
+    on_enter: root.detect()
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+        rows: 3
+        FloatLayout:
+            BackgroundLabel:
+                background_color: 0, 128 / 255, 55 / 255, 0.21
+                text: '      Detect Calories URFU'
+                size_hint: 1, 0.35
+                pos_hint: {'top': 1}
+                color: 0, 0, 0
+                font_name: 'Abel-Regular.ttf'
+                text_size: self.size
+                font_size: 22
+                halign: 'center'
+                valign: 'middle'
+            Button:
+                background_down: 'logo.png'
+                background_normal: 'logo.png'
+                size_hint: None, None
+                size: 150, 100
+                pos_hint: {'center_x': 0.09, 'center_y': 0.83}
+                on_press: app.root.current = 'Main menu'
+        GridLayout:
+            cols: 2
+            BoxLayout:
+                orientation: 'vertical'
+                Label1:
+                    text: 'Название блюда:'
+                    font_size: 18
+                    bold: True
+                Label1:
+                    text: ' Энергетическая ценность:'
+                Label1:
+                    text: ' Белки:'
+                Label1:
+                    text: ' Жиры:'
+                Label1:
+                    text: ' Углеводы:'
+            BoxLayout:
+                orientation: 'vertical'
+                Label2:
+                    id: dish
+                    text: 'Название'
+                Label2:
+                    id: kkal
+                    text: '0 кКал'
+                Label2:
+                    id: protein
+                    text: '0%'
+                Label2:
+                    id: fats
+                    text: '0%'
+                Label2:
+                    id: carboh
+                    text: '0%'
+        FloatLayout:
+            RoundedButton1:
+                font_name: 'Roboto'
+                font_size: 22
+                color: 0, 0, 0
+                bold: True
+                text: 'Ещё раз?'
+                size_hint: 0.75845, 0.23
+                pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                on_release: app.root.current = 'Camera'
+
+
+
+
+<RoundedButton@Button>:
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (255, 255, 255, 1) if self.state=='normal' else (.4, .4, .4, 1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [20,]
+
+
+<RoundedButton1@Button>:
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: (0, 128 / 255, 55 / 255, 0.21) if self.state=='normal' else (.4, .4, .4, 1)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [20,]
+
+
+<BackgroundColorForLabel@Widget>:
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10,]
+
+
+<BackgroundColorForLabel1@Widget>:
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+<BackgroundLabel@Label+BackgroundColorForLabel>:
+    background_color: 0, 0, 0, 0
+
+
+<BackgroundLabel1@Label+BackgroundColorForLabel1>:
+    background_color: 0, 0, 0, 0
+
+
+<Label1@BackgroundLabel1>:
+    text_size: self.size
+    halign: 'left'
+    valign: 'middle'
+    background_color: 0, 128 / 255, 55 / 255, 0.21
+    font_size: 16
+    font_name: 'Roboto'
+    color: 0, 0, 0
+
+
+<Label2@Label1>:
+    halign: 'center'
